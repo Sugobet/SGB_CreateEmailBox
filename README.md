@@ -4,7 +4,7 @@
 
 ### 程序介绍:  
 
-　　程序由 go 语言开发，可以大量注册可用的 ggo.la 随机邮箱账号<br>　　
+　　程序由 go 语言开发，可以大量注册可用的 [ggo.la](https://mail.ggo.net/) 随机邮箱账号<br>　　
 已接入[超人云打码平台](http://www.chaorendama.com/)，只需在配置文件中添加账号密码软件 id,并且确保你的账户余额充足, 即可在运行程序时添加命令行参数:isYundama=true(默认 false, false 则为手动打码)  
 + demo:SGB_CreateEmailBox.exe -num 3 -isYundama=true  
 <br>
