@@ -11,9 +11,9 @@ import (
 	"regexp"
 	"time"
 
+	"./yuncv"
 	"./config"
 	"./httpclient"
-	supermanyuncv "./yuncv"
 )
 
 /*	version: 3.0.0
@@ -27,8 +27,8 @@ var isCreateConfig bool
 var asImageName string = "asImage.png"
 var apiImageURL string = "https://api.ggo.net/api.php?op=checkcode&code_len=4&font_size=18"
 var (
-	saveEmailFileName         string
-	proxyAddr                 []string
+	saveEmailFileName string
+	proxyAddr []string
 	yUsername, yPassword, yID string
 )
 
@@ -60,7 +60,10 @@ func opFile(path string, mode int) *os.File {
 }
 
 func testRegex(text, re string) bool {
-	match, _ := regexp.MatchString(re, text)
+	match, err := regexp.MatchString(re, text)
+	if err != nil{
+		panic(err)
+	}
 
 	return match
 }
@@ -68,7 +71,10 @@ func testRegex(text, re string) bool {
 // client 必须是自定义的httpclient.Client类型
 // 的NewProxyClient方法封装后返回的http.Client对象
 func getImageAndCookie(client *http.Client) (cookie string, err error) {
-	request, _ := http.NewRequest("GET", apiImageURL, nil)
+	request, err := http.NewRequest("GET", apiImageURL, nil)
+	if err != nil{
+		panic(err)
+	}
 
 	res, err := client.Do(request)
 	if res != nil {
@@ -86,7 +92,10 @@ func getImageAndCookie(client *http.Client) (cookie string, err error) {
 	r, _ := regexp.Compile("(PHPSESSID=.*);")
 	cookie = r.FindString(cookie)
 
-	body, _ := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil{
+		panic(err)
+	}
 	file := opFile(asImageName, os.O_WRONLY|os.O_TRUNC)
 	defer file.Close()
 	file.Write(body)
@@ -136,7 +145,11 @@ func saveMailAccountNumber(MailName, PassWord string) {
 // 的NewProxyClient方法封装后返回的http.Client对象
 func regEmail(client *http.Client, cookie, code, emailname, emailpw string) error {
 	regMailURL := "https://api.ggo.net/box.php?op=email&callback=jQuery19106083270282093554_1579312976604&action=newreg&username=" + emailname + "&domain=%40ggo.la&password=" + emailpw + "&code=" + code
-	request, _ := http.NewRequest("GET", regMailURL, nil)
+	request, err := http.NewRequest("GET", regMailURL, nil)
+	if err != nil{
+		panic(err)
+	}
+
 	request.Header.Add("cookie", cookie)
 	request.Header.Add("Host", "api.ggo.net")
 	request.Header.Add("Referer", "https://mail.ggo.net/reg.html")
@@ -151,7 +164,11 @@ func regEmail(client *http.Client, cookie, code, emailname, emailpw string) erro
 		return err
 	}
 
-	body, _ := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil{
+		panic(err)
+	}
+
 	fmt.Println(string(body))
 	if testRegex(string(body), "200") {
 		saveMailAccountNumber(emailname, emailpw)

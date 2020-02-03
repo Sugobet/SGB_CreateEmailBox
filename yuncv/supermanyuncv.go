@@ -21,8 +21,12 @@ type Yundama struct {
 
 // Send 发送请求 获取验证码
 func (y *Yundama) Send(imgName string) (info float64, code string) {
-	f, _ := os.OpenFile(imgName, os.O_RDONLY, 0666)
+	f, err := os.OpenFile(imgName, os.O_RDONLY, 0666)
+	if err != nil{
+		panic(err)
+	}
 	defer f.Close()
+
 	d := make([]byte, 6000)
 	f.Read(d)
 	response, _ := http.PostForm("http://api2.sz789.net:88/RecvByte.ashx", url.Values{"username": {y.Username}, "password": {y.Password}, "softid": {y.ID}, "imgdata": {fmt.Sprintf("%x", d)}})
@@ -30,7 +34,10 @@ func (y *Yundama) Send(imgName string) (info float64, code string) {
 		defer response.Body.Close()
 	}
 
-	body, _ := ioutil.ReadAll(response.Body)
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil{
+		panic(err)
+	}
 
 	var j map[string]interface{}
 	json.Unmarshal([]byte(body), &j)
