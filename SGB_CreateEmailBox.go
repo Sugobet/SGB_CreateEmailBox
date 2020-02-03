@@ -13,7 +13,7 @@ import (
 
 	"./config"
 	"./httpclient"
-	supermanyuncv "./yuncv"
+	"./yuncv"
 )
 
 /*	version: 3.0.0
