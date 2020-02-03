@@ -31,8 +31,8 @@ var isCreateConfig bool
 var asImageName string = "asImage.png"
 var apiImageURL string = "https://api.ggo.net/api.php?op=checkcode&code_len=4&font_size=18"
 var (
-	saveEmailFileName         string
-	proxyAddr                 = make([]string, 1, 10)
+	saveEmailFileName string
+	proxyAddr []string
 	yUsername, yPassword, yID string
 )
 
@@ -206,9 +206,10 @@ func main() {
 	}
 
 	randint := func() (int, bool) {
-		if proxyAddr[0] == "" {
+		if len(proxyAddr) == 0{
 			return 0, false
 		}
+
 		return rand.Intn(len(proxyAddr)), true
 	}
 
