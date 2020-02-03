@@ -13,16 +13,12 @@ import (
 
 	"./config"
 	"./httpclient"
-	"./yuncv"
+	supermanyuncv "./yuncv"
 )
 
 /*	version: 3.0.0
-
 	邮箱官方登录地址：https://mail.ggo.net/
 	支持收发邮件(发QQ邮箱可能进垃圾箱)
-	请不要做调包侠;
-		author: Sugobet
-		github: https://github.com/Sugobet/SGB_GetMail
 */
 
 var createNum uint
@@ -31,8 +27,8 @@ var isCreateConfig bool
 var asImageName string = "asImage.png"
 var apiImageURL string = "https://api.ggo.net/api.php?op=checkcode&code_len=4&font_size=18"
 var (
-	saveEmailFileName string
-	proxyAddr []string
+	saveEmailFileName         string
+	proxyAddr                 []string
 	yUsername, yPassword, yID string
 )
 
@@ -206,7 +202,7 @@ func main() {
 	}
 
 	randint := func() (int, bool) {
-		if len(proxyAddr) == 0{
+		if len(proxyAddr) == 0 {
 			return 0, false
 		}
 
