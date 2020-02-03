@@ -18,7 +18,9 @@ type Config struct{
 }
 
 // CreateDefultConfigFile 创建默认配置文件
-func (c *Config) CreateDefultConfigFile() (status bool, err error) {
+// 创建成功则返回 状态为true, error is nil
+// 失败则返回false, error not is nil
+func (c *Config) CreateDefultConfigFile() (bool, error) {
 	file, err := os.OpenFile("config.json", os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 	if err != nil{
 		return false, err
@@ -36,12 +38,12 @@ func (c *Config) CreateDefultConfigFile() (status bool, err error) {
 }
 
 // UnConfig 将配置文件(json)反序列化为结构体
-func (c *Config) UnConfig() (con *Config, err error) {
+func (c *Config) UnConfig() (*Config, error) {
 	data, err := ioutil.ReadFile("config.json")
 	if err != nil{
 		return nil, err
 	}
-	con = &Config{}
+	con := &Config{}
 	err = json.Unmarshal(data, con)
 	if err != nil{
 		return nil, err
