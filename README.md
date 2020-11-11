@@ -1,3 +1,4 @@
+# 本项目已废弃.
 # SGB_CreateEmailBox
 
 <br>
